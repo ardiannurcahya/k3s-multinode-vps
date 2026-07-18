@@ -24,10 +24,16 @@ Do not continue when cluster IPs are not mutually routable. Worker registration 
 
 ## 2. Create Local Inventory
 
-Copy template:
+Copy template on Windows:
 
 ```powershell
 Copy-Item .\examples\nodes.example.json .\examples\nodes.local.json
+```
+
+Linux:
+
+```bash
+cp examples/nodes.linux.example.json examples/nodes.local.json
 ```
 
 Edit:
@@ -38,24 +44,44 @@ control-plane name/publicIp/clusterIp/sshKeyPath
 worker name/publicIp/clusterIp/sshKeyPath
 ```
 
+Use workstation-native key paths. Example: `C:\Users\you\.ssh\node.pem` on Windows or `/home/you/.ssh/node.pem` on Linux.
+
 Scripts abort if RFC 5737 TEST-NET placeholder addresses remain.
 
 ## 3. Verify SSH Identity
 
 Get SSH host-key fingerprints from provider console or trusted provisioning output. Compare before accepting first connection.
 
-After verification, preload `known_hosts` and use strict checking:
+After verification, preload `known_hosts` and use strict checking.
+
+Windows:
 
 ```powershell
 ssh-keyscan CONTROL_PLANE_PUBLIC_IP | Out-File -Append -Encoding ascii "$env:USERPROFILE\.ssh\known_hosts"
+```
+
+Linux:
+
+```bash
+mkdir -p -m 700 ~/.ssh
+ssh-keyscan CONTROL_PLANE_PUBLIC_IP >> ~/.ssh/known_hosts
+chmod 600 ~/.ssh/known_hosts
 ```
 
 `ssh-keyscan` itself does not authenticate a key. Compare fingerprint through trusted channel first.
 
 ## 4. Run Preflight
 
+Windows:
+
 ```powershell
 .\examples\check-vps.example.ps1
+```
+
+Linux:
+
+```bash
+bash ./examples/check-vps.example.sh
 ```
 
 Checks include:
@@ -102,8 +128,16 @@ Kubernetes normally prefers no swap. Small VPS nodes may use swap when kubelet i
 
 Apply only after reviewing target sizes:
 
+Windows:
+
 ```powershell
 .\examples\setup-swap.example.ps1 -Apply
+```
+
+Linux:
+
+```bash
+bash ./examples/setup-swap.example.sh --apply
 ```
 
 Sizing policy in example:
@@ -120,8 +154,16 @@ Script refuses to overwrite unknown existing `/swapfile` content and checks free
 
 Review inventory and script first:
 
+Windows:
+
 ```powershell
 .\examples\install-k3s-single.example.ps1 -Install
+```
+
+Linux:
+
+```bash
+bash ./examples/install-k3s-single.example.sh --install
 ```
 
 Installer behavior:

@@ -43,6 +43,9 @@ echo "CPU=$(nproc)"
 awk '/MemTotal/ {printf "MEM_MB=%.0f\n", $2/1024}' /proc/meminfo
 df -Pm / | awk 'NR==2 {print "DISK_ROOT_MB="$2" DISK_FREE_MB="$4" USED_PCT="$5}'
 echo "ADDRESSES=$(hostname -I)"
+expected_cluster_ip=$1
+hostname -I | tr ' ' '\n' | grep -Fxq "$expected_cluster_ip" || { echo "CLUSTER_IP_PRESENT=NO ($expected_cluster_ip)" >&2; exit 1; }
+echo CLUSTER_IP_PRESENT=YES
 command -v systemctl >/dev/null 2>&1 && echo SYSTEMD=YES || { echo SYSTEMD=NO; exit 1; }
 [ -e /sys/fs/cgroup/cgroup.controllers ] && echo CGROUP=v2 || echo CGROUP=v1
 command -v curl >/dev/null 2>&1 && echo CURL=YES || { echo CURL=NO; exit 1; }
@@ -59,7 +62,7 @@ foreach ($node in $nodes) {
     -o BatchMode=yes `
     -o ConnectTimeout=10 `
     -o StrictHostKeyChecking=yes `
-    "root@$($node.publicIp)" "tr -d '\015' | bash -s"
+    "root@$($node.publicIp)" "tr -d '\015' | bash -s -- '$($node.clusterIp)'"
   if ($LASTEXITCODE -ne 0) {
     throw "Preflight failed on $($node.name), exit code $LASTEXITCODE"
   }

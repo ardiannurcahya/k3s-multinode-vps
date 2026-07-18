@@ -17,6 +17,10 @@ backups/
 # Operational scripts containing real infrastructure inventory
 check-vps.ps1
 setup-swap.ps1
+check-vps.sh
+setup-swap.sh
+install-k3s-single.sh
+manage-cluster.sh
 install-k3s-cluster.ps1
 install-k3s-single-worklh.ps1
 resume-k3s-workers.ps1

@@ -4,7 +4,7 @@ Use SSH tunnel so Kubernetes API does not need broad public exposure.
 
 ## 1. Fetch Kubeconfig
 
-From trusted workstation:
+From trusted Windows workstation:
 
 ```powershell
 scp -i C:\path\to\control-plane.pem root@CONTROL_PLANE_PUBLIC_IP:/etc/rancher/k3s/k3s.yaml .\kubeconfig.local.yaml
@@ -17,6 +17,13 @@ icacls .\kubeconfig.local.yaml /inheritance:r /grant:r "${env:USERNAME}:(R,W)"
 ```
 
 Kubeconfig contains cluster-admin credentials. Never commit it.
+
+Linux:
+
+```bash
+scp -i ~/.ssh/control-plane.pem root@CONTROL_PLANE_PUBLIC_IP:/etc/rancher/k3s/k3s.yaml ./kubeconfig.local.yaml
+chmod 600 ./kubeconfig.local.yaml
+```
 
 ## 2. Change Endpoint
 
@@ -34,6 +41,12 @@ Do not use `0.0.0.0`. It is a server bind address, not a client destination.
 ssh -N -L 127.0.0.1:16443:127.0.0.1:6443 -i C:\path\to\control-plane.pem -o ExitOnForwardFailure=yes root@CONTROL_PLANE_PUBLIC_IP
 ```
 
+Linux uses same OpenSSH command with a Linux key path:
+
+```bash
+ssh -N -L 127.0.0.1:16443:127.0.0.1:6443 -i ~/.ssh/control-plane.pem -o ExitOnForwardFailure=yes root@CONTROL_PLANE_PUBLIC_IP
+```
+
 Keep terminal open. In second terminal:
 
 ```powershell
@@ -46,6 +59,16 @@ Or use:
 ```powershell
 .\examples\manage-cluster.example.ps1
 ```
+
+Linux:
+
+```bash
+SSH_KEY_PATH="$HOME/.ssh/control-plane.pem" \
+SSH_TARGET="root@CONTROL_PLANE_PUBLIC_IP" \
+bash ./examples/manage-cluster.example.sh kubectl get nodes
+```
+
+Linux helper keeps tunnel alive for supplied command and closes it afterward. Without command arguments, it runs `kubectl get nodes`.
 
 ## Common Errors
 

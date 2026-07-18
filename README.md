@@ -7,7 +7,7 @@ Reference topology:
 ```text
 1 control-plane
 N worker nodes
-Windows administration workstation
+Windows or Linux administration workstation
 ```
 
 This repository contains public examples only. Real IP addresses, SSH keys, node tokens, firewall exports, and kubeconfig files must stay outside Git.
@@ -28,11 +28,22 @@ If private addresses are not mutually routable, stop and create a VPN overlay su
 
 ## Prerequisites
 
-Administration workstation:
+Windows administration workstation:
 
 ```text
 Windows PowerShell 5.1 or newer
 OpenSSH client
+kubectl compatible with cluster version
+Git
+```
+
+Linux administration workstation:
+
+```text
+Bash 4.0 or newer
+OpenSSH client
+jq
+iproute2 (ss command)
 kubectl compatible with cluster version
 Git
 ```
@@ -60,33 +71,65 @@ Change version deliberately. Do not let reruns silently upgrade nodes.
 ## Quick Start
 
 1. Clone repository.
-2. Copy inventory template:
+2. Copy inventory template.
+
+Windows:
 
 ```powershell
 Copy-Item .\examples\nodes.example.json .\examples\nodes.local.json
 ```
 
+Linux:
+
+```bash
+cp examples/nodes.linux.example.json examples/nodes.local.json
+```
+
 3. Replace all example values in `examples\nodes.local.json`.
 4. Verify SSH host fingerprints using provider console before first connection.
 5. Add verified fingerprints to `known_hosts`.
-6. Run preflight:
+6. Run preflight.
+
+Windows:
 
 ```powershell
 .\examples\check-vps.example.ps1
 ```
 
+Linux:
+
+```bash
+bash ./examples/check-vps.example.sh
+```
+
 7. Configure firewall using `examples\firewall-rules.example.csv` as conceptual schema.
 8. Verify every cluster IP can reach every other cluster IP.
-9. Optionally configure swap:
+9. Optionally configure swap.
+
+Windows:
 
 ```powershell
 .\examples\setup-swap.example.ps1 -Apply
 ```
 
-10. Install K3s:
+Linux:
+
+```bash
+bash ./examples/setup-swap.example.sh --apply
+```
+
+10. Install K3s.
+
+Windows:
 
 ```powershell
 .\examples\install-k3s-single.example.ps1 -Install
+```
+
+Linux:
+
+```bash
+bash ./examples/install-k3s-single.example.sh --install
 ```
 
 11. Verify from control-plane:
@@ -123,10 +166,15 @@ docs/TROUBLESHOOTING.md
 docs/BACKUP_RESTORE.md
 docs/SECURITY.md
 examples/nodes.example.json
+examples/nodes.linux.example.json
 examples/check-vps.example.ps1
+examples/check-vps.example.sh
 examples/setup-swap.example.ps1
+examples/setup-swap.example.sh
 examples/install-k3s-single.example.ps1
+examples/install-k3s-single.example.sh
 examples/manage-cluster.example.ps1
+examples/manage-cluster.example.sh
 examples/firewall-rules.example.csv
 ```
 
@@ -162,5 +210,7 @@ Before publishing:
 git status --short --ignored
 git grep -n -E "BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|client-key-data:|token:"
 ```
+
+Commands are identical in Bash except PowerShell prompt syntax is not needed.
 
 `.gitignore` does not protect secrets already committed. Rotate any leaked credential and remove it from Git history.
