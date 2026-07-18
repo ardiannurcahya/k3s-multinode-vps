@@ -1,0 +1,6 @@
+CidrBlock,Protocol,Port,Action,FirewallRuleDescription
+10.0.0.0/24,ALL,ALL,Allow,Allow traffic inside cluster network
+198.51.100.25/32,TCP,22,Allow,Allow SSH from administrator
+10.0.0.0/24,TCP,6443,Allow,Allow Kubernetes API from cluster
+10.0.0.0/24,TCP,10250,Allow,Allow kubelet from cluster
+10.0.0.0/24,UDP,8472,Allow,Allow Flannel VXLAN from cluster

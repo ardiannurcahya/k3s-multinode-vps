@@ -1,0 +1,35 @@
+# Secrets and machine-specific files
+kubeconfig*.yaml
+*kubeconfig*.yml
+k3s.yaml
+node-token
+*.token
+*.env
+*.env.*
+!*.env.example
+*.pem
+*.key
+id_*
+examples/nodes.local.json
+secrets/
+backups/
+
+# Operational scripts containing real infrastructure inventory
+check-vps.ps1
+setup-swap.ps1
+install-k3s-cluster.ps1
+install-k3s-single-worklh.ps1
+resume-k3s-workers.ps1
+manage-cluster.ps1
+
+# Real infrastructure exports generated during setup
+firewallRules_*.csv
+firewallRulesTemplate_*.csv
+firewallRules_k3s_import*.csv
+firewallRules_k3s_working_format.csv
+k3s-firewall-rules.csv
+
+# Local/editor noise
+.DS_Store
+Thumbs.db
+*.log
