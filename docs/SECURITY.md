@@ -4,6 +4,8 @@
 
 Use private VPC or encrypted VPN overlay for node traffic. Flannel VXLAN encapsulates but does not encrypt traffic.
 
+For self-managed encrypted node transport, follow `docs/WIREGUARD.md`. Keep WireGuard `AllowedIPs` limited to exact cluster `/32` routes so public SSH and default internet routes remain unchanged.
+
 Restrict firewall sources:
 
 ```text

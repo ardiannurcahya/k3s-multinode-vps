@@ -48,6 +48,8 @@ Use workstation-native key paths. Example: `C:\Users\you\.ssh\node.pem` on Windo
 
 Scripts abort if RFC 5737 TEST-NET placeholder addresses remain.
 
+For WireGuard transport, add `--flannel-iface wg0` to K3s service arguments as described in `docs/WIREGUARD.md`.
+
 ## 3. Verify SSH Identity
 
 Get SSH host-key fingerprints from provider console or trusted provisioning output. Compare before accepting first connection.

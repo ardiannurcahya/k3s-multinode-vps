@@ -21,6 +21,9 @@ check-vps.sh
 setup-swap.sh
 install-k3s-single.sh
 manage-cluster.sh
+wireguard-*.local.ps1
+wireguard-*.local.json
+wireguard-backups/
 install-k3s-cluster.ps1
 install-k3s-single-worklh.ps1
 resume-k3s-workers.ps1

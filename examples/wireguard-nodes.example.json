@@ -1,0 +1,20 @@
+{
+  "cidr": "10.77.0.0/24",
+  "interface": "wg0",
+  "listenPort": 51820,
+  "mtu": 1380,
+  "nodes": [
+    {
+      "name": "control-1",
+      "publicIp": "203.0.113.10",
+      "wireguardIp": "10.77.0.1",
+      "publicKey": "CONTROL_PLANE_WIREGUARD_PUBLIC_KEY"
+    },
+    {
+      "name": "worker-1",
+      "publicIp": "203.0.113.11",
+      "wireguardIp": "10.77.0.2",
+      "publicKey": "WORKER_1_WIREGUARD_PUBLIC_KEY"
+    }
+  ]
+}

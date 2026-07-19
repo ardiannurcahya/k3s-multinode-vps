@@ -165,8 +165,10 @@ docs/LOCAL_ACCESS.md
 docs/TROUBLESHOOTING.md
 docs/BACKUP_RESTORE.md
 docs/SECURITY.md
+docs/WIREGUARD.md
 examples/nodes.example.json
 examples/nodes.linux.example.json
+examples/wireguard-nodes.example.json
 examples/check-vps.example.ps1
 examples/check-vps.example.sh
 examples/setup-swap.example.ps1
